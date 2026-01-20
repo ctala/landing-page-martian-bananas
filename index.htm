@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martian Bananas | Lo Natural del Planeta Rojo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mars-dust: #e2725b;
+            --deep-leaf: #2d4c3e;
+            --soft-cream: #fdfaf5;
+            --organic-green: #8da47e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--soft-cream);
+            color: var(--deep-leaf);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'DM+Serif+Display', serif;
+        }
+
+        .mars-gradient {
+            background: linear-gradient(135deg, #e2725b 0%, #bc4a3c 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 114, 91, 0.1);
+        }
+
+        .organic-shape {
+            border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%;
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .cta-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(226, 114, 91, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(45, 76, 62, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modal Form -->
+    <div id="orderModal" class="modal-overlay items-center justify-center p-4">
+        <div class="modal-content bg-[#fdfaf5] w-full max-w-lg rounded-[40px] p-8 md:p-12 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-[#e2725b] text-2xl">×</button>
+            <h2 class="text-4xl mb-4">Tu pedido interplanetario</h2>
+            <p class="text-gray-600 mb-8">Completa tus datos y un dron saldrá de Marte en minutos.</p>
+            
+            <form id="orderForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2">Nombre Completo</label>
+                    <input type="text" required class="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#e2725b] transition-colors" placeholder="Ej. Mark Watney">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2">Planeta/Luna</label>
+                        <select class="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#e2725b] transition-colors">
+                            <option>Tierra</option>
+                            <option>La Luna</option>
+                            <option>Europa (Júpiter)</option>
+                            <option>Titán (Saturno)</option>
+                            <option>Estación Espacial Int.</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest mb-2">Cantidad (Racimos)</label>
+                        <input type="number" min="1" value="1" class="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#e2725b] transition-colors">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest mb-2">Coordenadas de Entrega</label>
+                    <input type="text" required class="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#e2725b] transition-colors" placeholder="Sector, Domo o Puerto">
+                </div>
+                <button type="submit" class="w-full bg-[#e2725b] text-white py-4 rounded-2xl font-bold text-lg mt-4 cta-button shadow-lg">
+                    Confirmar Pedido 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header / Nav -->
+    <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center bg-white/50 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-[#e2725b] rounded-full flex items-center justify-center">
+                <span class="text-white font-bold">M</span>
+            </div>
+            <span class="text-xl font-semibold tracking-tight">MartianBananas</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
+            <a href="#beneficios" class="hover:text-[#e2725b]">Beneficios</a>
+            <a href="#logistica" class="hover:text-[#e2725b]">Logística</a>
+            <a href="#comprar" class="hover:text-[#e2725b]">Tienda</a>
+        </div>
+        <button onclick="openModal()" class="bg-[#2d4c3e] text-white px-6 py-2 rounded-full text-sm font-semibold cta-button">
+            Pedir Ahora
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+                <span class="inline-block px-4 py-1 rounded-full border border-[#e2725b] text-[#e2725b] text-xs font-bold mb-6">
+                    ENVÍO INTERPLANETARIO EN < 24H
+                </span>
+                <h1 class="text-6xl md:text-8xl leading-tight mb-6">
+                    Bananas Marcianas, <br>
+                    <span class="text-[#e2725b]">Cosechadas en el Espacio.</span>
+                </h1>
+                <p class="text-lg text-gray-600 mb-10 max-w-lg leading-relaxed">
+                    Cultivadas en los valles de Tharsis bajo luz solar filtrada y agua mineral del subsuelo marciano. Sin pesticidas, puro sabor galáctico entregado en tu puerta antes de que termine el día.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="openModal()" class="bg-[#e2725b] text-white px-10 py-4 rounded-2xl text-lg font-bold cta-button shadow-lg">
+                        Cosechar mi Racimo
+                    </button>
+                    <button class="border-2 border-[#2d4c3e] text-[#2d4c3e] px-10 py-4 rounded-2xl text-lg font-bold">
+                        Nuestra Granja
+                    </button>
+                </div>
+            </div>
+            <div class="relative flex justify-center">
+                <div class="absolute w-[120%] h-[120%] bg-[#e2725b]/10 organic-shape -z-10 animate-pulse"></div>
+                <div class="floating">
+                    <div class="w-64 h-80 bg-yellow-300 organic-shape shadow-2xl flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+                        <span class="text-8xl">🍌</span>
+                    </div>
+                </div>
+                <div class="absolute bottom-10 right-0 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">✓</div>
+                    <div>
+                        <p class="text-xs font-bold">100% Orgánico</p>
+                        <p class="text-[10px] text-gray-400">Certificación Sol-02</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats / Trust -->
+    <section id="beneficios" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <h3 class="text-4xl font-bold text-[#e2725b]">22h</h3>
+                    <p class="text-sm text-gray-500 uppercase tracking-widest mt-2">Promedio de Entrega</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold text-[#e2725b]">100%</h3>
+                    <p class="text-sm text-gray-500 uppercase tracking-widest mt-2">Gravedad Controlada</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold text-[#e2725b]">0%</h3>
+                    <p class="text-sm text-gray-500 uppercase tracking-widest mt-2">Aditivos Químicos</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold text-[#e2725b]">∞</h3>
+                    <p class="text-sm text-gray-500 uppercase tracking-widest mt-2">Potasio Galáctico</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section class="py-24 bg-[#fdfaf5]">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mb-16">
+                <h2 class="text-5xl mb-6">¿Por qué cultivar en Marte?</h2>
+                <p class="text-xl text-gray-600">La baja gravedad y el suelo rico en hierro de Marte producen bananas con una textura más cremosa y un dulzor concentrado imposible de replicar en la Tierra.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="glass-card p-10 rounded-[40px] border-b-4 border-[#e2725b]">
+                    <div class="text-4xl mb-6">🌱</div>
+                    <h4 class="text-2xl mb-4">Suelo Marciano Puro</h4>
+                    <p class="text-gray-600">Utilizamos sedimentos de antiguos ríos marcianos, naturalmente cargados de minerales que potencian el sistema inmunológico.</p>
+                </div>
+                <div class="glass-card p-10 rounded-[40px] border-b-4 border-[#8da47e]">
+                    <div class="text-4xl mb-6">🚀</div>
+                    <h4 class="text-2xl mb-4">Logística Warp</h4>
+                    <p class="text-gray-600">Nuestras cápsulas de despacho de "punto a punto" garantizan que la fruta llegue a tu mesa fresca, como si la hubieras cortado tú mismo.</p>
+                </div>
+                <div class="glass-card p-10 rounded-[40px] border-b-4 border-[#2d4c3e]">
+                    <div class="text-4xl mb-6">♻️</div>
+                    <h4 class="text-2xl mb-4">Cero Residuos</h4>
+                    <p class="text-gray-600">Empaques hechos de fibra de cáscara de banana compostable. Amamos el sistema solar, lo protegemos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delivery Visual Section -->
+    <section id="logistica" class="py-24 bg-[#2d4c3e] text-white overflow-hidden relative">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+            <div class="flex-1">
+                <h2 class="text-5xl mb-8">De los domos de Marte a tu mesa en tiempo récord.</h2>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full border-2 border-[#e2725b] flex items-center justify-center shrink-0">1</div>
+                        <p class="text-lg">Cosecha manual al recibir tu orden en el Domo Alpha.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full border-2 border-[#e2725b] flex items-center justify-center shrink-0">2</div>
+                        <p class="text-lg">Lanzamiento en cápsula hipersónica hacia la estación orbital más cercana.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full border-2 border-[#e2725b] flex items-center justify-center shrink-0">3</div>
+                        <p class="text-lg">Dron de última milla entrega en tu portal en cualquier planeta o luna.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 relative">
+                <div class="w-full aspect-square border border-white/20 rounded-full flex items-center justify-center">
+                    <div class="w-3/4 aspect-square border border-white/40 rounded-full flex items-center justify-center animate-[spin_20s_linear_infinite]">
+                         <div class="w-4 h-4 bg-[#e2725b] rounded-full absolute -top-2"></div>
+                    </div>
+                    <div class="absolute text-center">
+                        <p class="text-6xl mb-2">☄️</p>
+                        <p class="text-xs uppercase tracking-widest font-bold">Trayectoria Activa</p>
+                        <p class="text-3xl font-serif">Marte → Tierra</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop / Pricing -->
+    <section id="comprar" class="py-24 bg-[#fdfaf5]">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl mb-4">Elige tu experiencia marciana</h2>
+            <p class="text-gray-600 mb-16">Suscripciones o compras únicas con envío incluido.</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Plan 1 -->
+                <div class="bg-white p-8 rounded-[40px] shadow-sm hover:shadow-xl transition-shadow border border-gray-100">
+                    <h4 class="text-xl font-bold mb-2">Pack Explorador</h4>
+                    <p class="text-gray-400 mb-6 italic">6 bananas premium</p>
+                    <div class="text-4xl font-bold mb-8">15 <span class="text-sm text-gray-500">Créditos</span></div>
+                    <ul class="text-left space-y-4 mb-10 text-gray-600">
+                        <li>✓ Cosecha del día</li>
+                        <li>✓ Envío prioritario</li>
+                        <li>✓ Tracking en tiempo real</li>
+                    </ul>
+                    <button onclick="openModal()" class="w-full py-4 rounded-2xl border-2 border-[#e2725b] text-[#e2725b] font-bold hover:bg-[#e2725b] hover:text-white transition-colors">Seleccionar</button>
+                </div>
+                <!-- Plan 2 (Destacado) -->
+                <div class="bg-white p-8 rounded-[40px] shadow-2xl relative border-2 border-[#e2725b] scale-105">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#e2725b] text-white px-4 py-1 rounded-full text-xs font-bold uppercase">Más Vendido</div>
+                    <h4 class="text-xl font-bold mb-2">Racimo Colono</h4>
+                    <p class="text-gray-400 mb-6 italic">12 bananas + 1 snack seco</p>
+                    <div class="text-4xl font-bold mb-8">25 <span class="text-sm text-gray-500">Créditos</span></div>
+                    <ul class="text-left space-y-4 mb-10 text-gray-600">
+                        <li>✓ Todo el Pack Explorador</li>
+                        <li>✓ Seguro de impacto atmosférico</li>
+                        <li>✓ Suscripción mensual flexible</li>
+                    </ul>
+                    <button onclick="openModal()" class="w-full py-4 rounded-2xl bg-[#e2725b] text-white font-bold cta-button">Comprar Ahora</button>
+                </div>
+                <!-- Plan 3 -->
+                <div class="bg-white p-8 rounded-[40px] shadow-sm hover:shadow-xl transition-shadow border border-gray-100">
+                    <h4 class="text-xl font-bold mb-2">Caja Galáctica</h4>
+                    <p class="text-gray-400 mb-6 italic">40 bananas (Ideal para oficinas/bases)</p>
+                    <div class="text-4xl font-bold mb-8">75 <span class="text-sm text-gray-500">Créditos</span></div>
+                    <ul class="text-left space-y-4 mb-10 text-gray-600">
+                        <li>✓ Entrega en 12 horas</li>
+                        <li>✓ Contenedor reutilizable</li>
+                        <li>✓ Soporte 24/7</li>
+                    </ul>
+                    <button onclick="openModal()" class="w-full py-4 rounded-2xl border-2 border-[#e2725b] text-[#e2725b] font-bold hover:bg-[#e2725b] hover:text-white transition-colors">Seleccionar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12 border-t border-gray-100">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-[#e2725b] rounded-full flex items-center justify-center text-white font-bold">M</div>
+                <span class="font-semibold">MartianBananas</span>
+            </div>
+            <p class="text-gray-400 text-sm">© 2026 Martian Agriculture Corp. Operando bajo la Ley Intergaláctica de Comercio.</p>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-400 hover:text-[#e2725b]">Twitter</a>
+                <a href="#" class="text-gray-400 hover:text-[#e2725b]">Instagram</a>
+                <a href="#" class="text-gray-400 hover:text-[#e2725b]">GalacticNet</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('orderModal');
+        
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Form Submission Logic
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button');
+            const originalText = submitBtn.innerText;
+            
+            submitBtn.innerText = "🚀 Lanzando Cápsula...";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.innerText = "¡Confirmado! Revisa el Cielo ✨";
+                submitBtn.style.backgroundColor = "#2d4c3e";
+                
+                setTimeout(() => {
+                    closeModal();
+                    // Reset form and button
+                    e.target.reset();
+                    submitBtn.innerText = originalText;
+                    submitBtn.style.backgroundColor = "";
+                    submitBtn.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
